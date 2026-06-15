@@ -1,1 +1,1 @@
-# Diectorio-de-NA
+# Directorio-de-NA
