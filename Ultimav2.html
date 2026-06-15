@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directorio N.A. - Medellín y Antioquia</title>
+    <style>
+        /* --- Variables de Color (fácil de personalizar) --- */
+        :root {
+            --color-fondo: #f0f2f5; /* Gris claro */
+            --color-tarjeta: #ffffff;
+            --color-texto-principal: #003087;
+            --color-texto-secundario: #0055b3;
+            --color-borde: #e5e7eb;
+            --color-acento-inicio: #0055b3;
+            --color-acento-fin: #003087;
+        }
+
+        /* --- Estilos Globales --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 24px 16px;
+            background-color: var(--color-fondo);
+            color: var(--color-texto-principal);
+            line-height: 1.6;
+        }
+
+        /* --- Contenedor Principal --- */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--color-tarjeta);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- Encabezado del Perfil --- */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--color-borde);
+            padding-bottom: 24px;
+        }
+
+        .profile-logo {
+            max-width: 500px;
+            width: 100%;
+            height: auto;
+            margin-bottom: 16px;
+        }
+
+        .profile-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        /* --- Mensaje de Ayuda (Helpline) --- */
+        .helpline {
+            background-color: #e0f2f7; /* Un color suave para destacar */
+            border: 1px solid #b2ebf2;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 0.95rem;
+            color: var(--color-texto-principal);
+            font-weight: 500;
+        }
+
+        /* --- Barra de Búsqueda --- */
+        .search-wrap {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        .search-wrap svg {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+        .search-wrap input {
+            width: 100%;
+            padding: 12px 45px 12px 45px;
+            border: 1px solid var(--color-borde);
+            border-radius: 25px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box; /* Corrige el desbordamiento */
+        }
+        .search-wrap input:focus {
+            outline: none;
+            border-color: var(--color-acento-inicio);
+            box-shadow: 0 0 0 3px rgba(0, 85, 179, 0.2);
+        }
+        .search-wrap button {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #9ca3af;
+            padding: 0 5px;
+        }
+
+        /* --- Acordeón para las Zonas --- */
+        .zone-accordion {
+            margin-bottom: 16px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--color-borde);
+        }
+
+        .zone-accordion summary {
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: linear-gradient(45deg, var(--color-acento-inicio), var(--color-acento-fin));
+            color: white;
+            list-style: none; /* Oculta la flecha por defecto */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        
+        .zone-accordion summary::-webkit-details-marker {
+            display: none; /* Oculta la flecha en Chrome/Safari */
+        }
+
+        .zone-accordion summary::after {
+            content: '+'; /* Símbolo cuando está cerrado */
+            font-size: 1.5rem;
+            font-weight: 300;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .zone-accordion[open] summary::after {
+            transform: rotate(45deg); /* Gira a 'x' cuando está abierto */
+        }
+
+        .groups-list {
+            padding: 8px 16px 16px;
+            background-color: #f9fafb;
+        }
+
+        /* --- Tarjeta para cada Grupo --- */
+        .group-card {
+            background-color: var(--color-tarjeta);
+            border: 1px solid var(--color-borde);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+        }
+
+        .group-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin: 0 0 8px 0;
+        }
+
+        .group-address {
+            font-size: 0.9rem;
+            color: var(--color-texto-secundario);
+            margin-bottom: 12px;
+        }
+        
+        .group-address a {
+            color: var(--color-acento-inicio);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .group-address a:hover {
+            text-decoration: underline;
+        }
+
+        .group-schedule {
+            border-top: 1px dashed var(--color-borde);
+            padding-top: 12px;
+        }
+        
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            padding: 4px 0;
+        }
+
+        .schedule-item strong {
+            color: var(--color-texto-principal);
+        }
+        
+        .link-url {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            word-break: break-all;
+            color: var(--color-acento-fin);
+            font-weight: 600;
+        }
+        
+        .nota-interna {
+            font-size: 0.8rem;
+            color: #e11d48;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+
+        /* --- Botón de ubicación --- */
+        .location-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: #f3f4f6;
+            color: var(--color-texto-secundario);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s, color 0.2s;
+            margin-right: 8px; /* Espacio entre el botón y la dirección */
+        }
+        .location-button:hover {
+            background-color: #e5e7eb;
+            color: var(--color-texto-principal);
+        }
+        .location-button svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        /* --- Botón Flotante de WhatsApp (FAB) --- */
+        .whatsapp-fab-container {
+            position: sticky;
+            bottom: 25px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column-reverse; /* Para que las opciones salgan hacia arriba */
+            align-items: flex-end; /* Alinea el botón a la derecha */
+        }
+
+        .wa-main-button {
+            background-color: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .wa-main-button:hover {
+            transform: scale(1.1);
+        }
+
+        .wa-main-button svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .wa-options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 15px;
+            /* Oculto por defecto con animación */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        }
+
+        /* Cuando el contenedor está activo, muestra las opciones */
+        .whatsapp-fab-container.active .wa-options-container {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .whatsapp-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: #128C7E; /* Darker WhatsApp Green */
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            white-space: nowrap; /* Evita que el texto se parta */
+            transition: background-color 0.2s;
+        }
+
+        .whatsapp-button:hover {
+            background-color: #075E54; /* Even darker */
+        }
+
+        /* --- Pie de Página Global --- */
+        .page-footer {
+            padding: 40px 20px 20px;
+            text-align: center;
+            color: var(--color-texto-secundario);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .page-footer strong {
+            color: var(--color-texto-principal);
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+        .page-footer em {
+            display: block;
+            margin-bottom: 16px;
+        }
+        .page-footer a {
+            color: inherit;
+            text-decoration: underline;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        
+        <header class="profile-header">
+            <img class="profile-logo" src="LogoAntioquia.jpeg" alt="Logo de Narcóticos Anónimos Antioquia">
+            <h1 class="profile-title">ÁREA DE MEDELLÍN Y SUR DE ANTIOQUIA - Directorio de Grupos</h1>
+        </header>
+
+        <!-- Mensaje de Ayuda -->
+        <div class="helpline">
+            📞 ¿Necesitas ayuda ahora? — <strong>¡La recuperación es posible!</strong> Encuentra tu grupo y da el primer paso.
+        </div>
+
+        <!-- Barra de Búsqueda -->
+        <div class="search-wrap">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <input type="text" id="searchInput" onkeyup="filterGroups()" placeholder="Buscar grupo, barrio, dirección..." autocomplete="off">
+            <button onclick="clearSearch()" title="Limpiar búsqueda">×</button>
+        </div>
+
+        <section class="directory" style="padding-bottom: 20px;">
+
+            <!-- ZONA OCCIDENTAL -->
+            <details class="zone-accordion">
+                <summary>ZONA OCCIDENTAL</summary>
+                <div class="groups-list">
+                    <div class="group-card">
+                        <h3 class="group-name">Comuna 13</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+43+%23100-03+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 43 #100-03 (402) P1. Al lado Iglesia San Javier
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Martes:</span> <strong>7:00 P.M.</strong></div>
+                            <div class="schedule-item"><span>Sábado:</span> <strong>7:00 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Solo por Hoy</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Carrera+80+%2344-55+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cra 80 #44-55 Barrio La América
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes a Sábado:</span> <strong>7:00A.M. / 12:15P.M. / 4:00P.M. / 7:15P.M.</strong></div>
+                            <div class="schedule-item"><span>Domingo:</span> <strong>7:00A.M. / 5:00P.M.</strong></div>
+                        </div>
+                    </div>
+                     <div class="group-card">
+                        <h3 class="group-name">El Camino</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+49+%2381-44+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 49 #81-44 Acción Comunal Calasanz
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes:</span> <strong>7:00P.M. (Híbrida)</strong></div>
+                            <div class="schedule-item"><span>Martes:</span> <strong>8:00P.M. (Virtual)</strong></div>
+                            <div class="schedule-item"><span>Miércoles:</span> <strong>7:00A.M.</strong></div>
+                            <div class="schedule-item"><span>Jueves:</span> <strong>7:00P.M. (Híbrida)</strong></div>
+                            <div class="schedule-item"><span>Viernes:</span> <strong>7:00P.M. (Híbrida)</strong></div>
+                            <div class="schedule-item"><span>Sábado:</span> <strong>7:15P.M.</strong></div>
+                            <div class="schedule-item"><span>Domingo:</span> <strong>7:15P.M.</strong></div>
+                        </div>
+                        <a href="https://meet.google.com/ohu-gjmt-srj" target="_blank" class="link-url">meet.google.com/ohu-gjmt-srj</a>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Vivir Limpios</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Transversal+78A+%2388-06+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Tv 78A #88-06 Robledo Bello Horiz. Salón Social
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Martes:</span> <strong>7:15 P.M.</strong></div>
+                            <div class="schedule-item"><span>Viernes:</span> <strong>7:15 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Sendas Espirituales</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Carrera+107+%2343-46+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cra 107 #43-46 J.A.C. Antonio Nariño
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes, Miércoles, Jueves, Viernes:</span> <strong>7:15 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">La Esperanza</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Avenida+33+%2381-40+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Av 33 #81-40 S.P.I. Iglesia Santa Gema
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Domingo:</span> <strong>12:30 A.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Camino a la Libertad</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+62+%23131-80+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 62 #131-80 P2 San Cristóbal (Biblioteca)
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Martes:</span> <strong>4:00 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Volver a Vivir</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+8B+Sopetran" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Calle 8B Salón Parroquial ingreso Cl 8B, Sopetrán
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Miércoles:</span> <strong>6:00 P.M.</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- ZONA NORTE -->
+            <details class="zone-accordion">
+                <summary>ZONA NORTE</summary>
+                <div class="groups-list">
+                    <div class="group-card">
+                        <h3 class="group-name">Vida</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Carrera+50+%23450-71+Bello" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cra 50 #450-71 P2 Bello (Frente Cootrafa)
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes a Domingo:</span> <strong>7:00A.M. y 7:00P.M.</strong></div>
+                        </div>
+                        <p class="nota-interna">*1er Sábado de cada Mes Maratónica</p>
+                    </div>
+                     <div class="group-card">
+                        <h3 class="group-name">Los Lazos que nos Unen</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Diagonal+55+%2333-47+Bello" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Diag 55 #33-47 Niquía Bello (P. Amigo Jesús)
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes a Viernes:</span> <strong>7:00P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Punto de Libertad</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+123+%2351A-29+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 123 #51A-29 El Playón
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Martes:</span> <strong>7:15 P.M.</strong></div>
+                            <div class="schedule-item"><span>Miércoles:</span> <strong>7:15 P.M.</strong></div>
+                            <div class="schedule-item"><span>Domingo:</span> <strong>6:00 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">El Milagro</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+108+%2381-06+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 108 #81-06 J.A.C. Barrio F. Gómez
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Jueves:</span> <strong>7:00 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Nunca Más Solos</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Carrera+78A+%2395-55+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cra 78A #95-55 J.A.C. San Martín de Porres
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Martes:</span> <strong>7:00 P.M.</strong></div>
+                            <div class="schedule-item"><span>Miércoles:</span> <strong>8:00 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">El Cambio es Hoy</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+52+%2341-16+Copacabana" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 52 #41-16 Placa Dep. El Recreo Copacabana
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes, Viernes, Sábado:</span> <strong>7:00 P.M.</strong></div>
+                            <div class="schedule-item"><span>Miércoles:</span> <strong>7:00 P.M. (Reunión Cerrada)</strong></div>
+                            <div class="schedule-item"><span>Domingo:</span> <strong>5:00 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">La Unidad</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+24A+%2358A-80+Bello" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 24A #58A-80 J.A.C. Barrio Nuevo
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes:</span> <strong>7:15 P.M. (Reunión Cerrada)</strong></div>
+                            <div class="schedule-item"><span>Jueves:</span> <strong>7:15 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Olas de Cambio</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Carrera+68+%2392F-00+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cra 68 #92F-00 Diag. Hospital La María Castilla
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Miércoles, Viernes, Sábado:</span> <strong>7:15 P.M.</strong></div>
+                            <div class="schedule-item"><span>Domingo:</span> <strong>9:00 A.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Otra Oportunidad</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+7+%2313-10+Girardota" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 7 #13-10 Int 201 Girardota
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Sábado:</span> <strong>3:00 P.M.</strong></div>
+                            <div class="schedule-item"><span>Domingo y Festivos:</span> <strong>10:00 A.M.</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </details>
+            
+            <!-- ZONA NORORIENTAL -->
+            <details class="zone-accordion">
+                <summary>ZONA NORORIENTAL</summary>
+                <div class="groups-list">
+                    <div class="group-card">
+                        <h3 class="group-name">La Fortaleza</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Carrera+44A+%2385-191+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cra 44A #85-191 Piso 2
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Martes:</span> <strong>7:15 P.M.</strong></div>
+                            <div class="schedule-item"><span>Sábado:</span> <strong>7:15 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">El Mensaje</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Carrera+48A+%2377-43+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cra 48A #77-43 S.P. Iglesia El Calvario
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes, Jueves, Viernes:</span> <strong>7:15 P.M.</strong></div>
+                            <div class="schedule-item"><span>Miércoles:</span> <strong>7:15 P.M. (Reunión Cerrada)</strong></div>
+                            <div class="schedule-item"><span>Domingo:</span> <strong>5:00 P.M. y 6:30 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">La Segunda Oportunidad</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Carrera+40+%2395A-20+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cra 40 #95A-20 Iglesia Ntra. Sra. Guadalupe
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Viernes:</span> <strong>7:00 P.M. y 8:15 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Algo Más Será Revelado</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+108+%2343-32+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 108 #43-32 B. Popular 1 (La Divina Providencia)
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Jueves:</span> <strong>7:00 P.M.</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- ZONA CENTRO / CENTRO ORIENTAL -->
+            <details class="zone-accordion">
+                <summary>ZONA CENTRO / CENTRO ORIENTAL</summary>
+                <div class="groups-list">
+                    <div class="group-card">
+                        <h3 class="group-name">Despertar Espiritual</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Carrera+52+%2361-96+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cra 52 #61-96 Piso 3
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes a Domingo:</span> <strong>7:00 A.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Libertad</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Carrera+52+%2361-96+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cra 52 #61-96 Piso 3
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes a Domingo:</span> <strong>12:15 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Limpio y Sereno</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+57A+%2345D-34+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 57A #45D-34
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes a Domingo:</span> <strong>7:00 A.M.</strong></div>
+                            <div class="schedule-item"><span>Lunes, Miércoles, Jueves, Viernes, Domingo:</span> <strong>7:15 P.M.</strong></div>
+                            <div class="schedule-item"><span>Martes:</span> <strong>7:00 P.M.</strong></div>
+                            <div class="schedule-item"><span>Sábado:</span> <strong>5:00 P.M. y 7:00 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Confianza</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+40+%23260-125+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 40 #260-125 Barrio La Milagrosa
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes a Sábado:</span> <strong>7:00 A.M.</strong></div>
+                            <div class="schedule-item"><span>Lunes, Miércoles, Viernes:</span> <strong>7:00 P.M. (Reunión Cerrada)</strong></div>
+                            <div class="schedule-item"><span>Martes, Jueves, Sábado, Domingo:</span> <strong>7:00 P.M.</strong></div>
+                            <div class="schedule-item"><span>Miércoles:</span> <strong>12:15 P.M.</strong></div>
+                            <div class="schedule-item"><span>Domingo y Festivos:</span> <strong>10:00 A.M.</strong></div>
+                        </div>
+                        <p class="nota-interna">*1er Sábado Discusión 8:45 P.M.</p>
+                    </div>
+                </div>
+            </details>
+
+            <!-- ÁREA DE ANTIOQUIA / GUAYABAL / POBLADO / ENVIGADO -->
+            <details class="zone-accordion">
+                <summary>GUAYABAL / POBLADO / ENVIGADO</summary>
+                <div class="groups-list">
+                    <div class="group-card">
+                        <h3 class="group-name">Transformación</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Carrera+65+%2332B-70+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cra 65 #32B-70 S.P. Belén Fátima
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes, Miércoles:</span> <strong>7:00 P.M.</strong></div>
+                            <div class="schedule-item"><span>Viernes (Grupo de Mujeres):</span> <strong>4:00 P.M.</strong></div>
+                            <div class="schedule-item"><span>Domingo:</span> <strong>8:00 P.M.</strong></div>
+                            <div class="schedule-item"><span>Domingo (Virtual):</span> <strong>10:00 P.M.</strong></div>
+                        </div>
+                        <a href="https://us02web.zoom.us/j/81302857503" target="_blank" class="link-url">https://us02web.zoom.us/j/81302857503</a>
+                        <p class="nota-interna">*1er Domingo de cada mes Cerro Nutibara</p>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Buena Voluntad</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+2A+Sur+%2353-34+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 2A Sur #53-34 Cristo Rey Guayabal
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Martes, Jueves (Cerrada):</span> <strong>7:15 P.M.</strong></div>
+                            <div class="schedule-item"><span>Viernes, Sábado, Domingo (Abierta):</span> <strong>7:15 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Living Clean (English)</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Cra+43+D+%23+11+-+73+El+Poblado+Medellin" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cra 43 D # 11 - 73 El Poblado, Sede Social Barrio Manila
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Miércoles:</span> <strong>12:30 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">La Humildad</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+40+Sur+%2329A-25+Envigado" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 40 Sur #29A-25 S.P. San José Envigado
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Miércoles, Jueves, Sábado:</span> <strong>7:00 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Enséñame a Vivir</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+40H+Sur+%2341-37+Envigado" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 40H Sur #41-37 J.A.C. El Dorado P2
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Martes, Viernes (Híbrida):</span> <strong>7:15 P.M.</strong></div>
+                        </div>
+                        <a href="https://meet.google.com/ohu-gjmt-srj" target="_blank" class="link-url">Enlace Híbrido</a>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Luz de Vida</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Carrera+42B+%2326+Sur-05+Envigado" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cra 42B #26 Sur-05 J.A.C. Las Orquídeas
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Viernes:</span> <strong>5:00 P.M.</strong></div>
+                            <div class="schedule-item"><span>Domingo:</span> <strong>4:00 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Creciendo Juntos</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Transversal+32D+%2331-16+Envigado" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Transv 32D #31-16 J.A.C. Las Flores Env.
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Viernes:</span> <strong>7:00 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Dando Motivos</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+68+Sur+%2346A-57+Sabaneta" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 68 Sur #46A-57 Av. Las Vegas (Sabaneta)
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes, Miércoles, Viernes:</span> <strong>8:15 P.M.</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- ITAGÜÍ / MUNICIPIOS / ORIENTE -->
+            <details class="zone-accordion">
+                <summary>ITAGÜÍ / MUNICIPIOS / ORIENTE</summary>
+                <div class="groups-list">
+                    <div class="group-card">
+                        <h3 class="group-name">El Deseo</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Carrera+70+%2334-42+Itagui" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cra 70 #34-42 P3 B. San Gabriel (Itagüí)
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Martes, Jueves:</span> <strong>7:00 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Llegamos a Creer</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Diagonal+45+%2334A-03+Itagui" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Diag. 45 #34A-03 San Pío (Itagüí)
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes a Viernes:</span> <strong>12:30 P.M.</strong></div>
+                            <div class="schedule-item"><span>Lunes, Martes, Viernes, Domingo:</span> <strong>7:00 P.M.</strong></div>
+                            <div class="schedule-item"><span>Miércoles, Jueves:</span> <strong>8:00 P.M.</strong></div>
+                            <div class="schedule-item"><span>Sábado:</span> <strong>2:30, 7:00 y 9:30 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Somos un Milagro</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Carrera+48+%2366-00+Itagui" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cra 48 #66-00 Simón Bolívar Itagüí
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Martes, Viernes:</span> <strong>8:30 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">La Amistad</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+41+Sur+%2380-71+San+Antonio+de+Prado" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 41 Sur #80-71 P3 S. Antonio de Prado
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Domingo:</span> <strong>5:30 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Cambio de Vida</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+95Sur+%2355-15+La+Estrella" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 95Sur #55-15 J.A.C. Pueblo Viejo Estrella
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Martes, Viernes:</span> <strong>7:00 P.M.</strong></div>
+                            <div class="schedule-item"><span>Domingo:</span> <strong>12:00 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Renacer</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+83A+Sur+%2360-45+La+Estrella" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 83A Sur #60-45 Casa de la Cultura Estrella
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes:</span> <strong>7:15 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Esperanza de Vivir</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Carrera+50+%23139+Sur-06+Caldas" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cra 50 #139 Sur-06 Caldas
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Jueves, Viernes:</span> <strong>7:00 P.M.</strong></div>
+                            <div class="schedule-item"><span>Sábado (Reunión Cerrada):</span> <strong>7:00 P.M.</strong></div>
+                            <div class="schedule-item"><span>Domingo:</span> <strong>8:00 A.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Hazlo Simple</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+54+%2347-48+Rionegro" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 54 #47-48 Rionegro
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes a Miércoles, Viernes:</span> <strong>7:00 P.M.</strong></div>
+                            <div class="schedule-item"><span>Jueves (Estudio Tradiciones):</span> <strong>7:00 P.M.</strong></div>
+                            <div class="schedule-item"><span>Sábado, Domingo:</span> <strong>5:00 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Aprendiendo a Vivir</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Pasaje+Los+Chivos+Marinilla" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Pasaje Los Chivos, Parque Principal Marinilla
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes, Miércoles, Viernes, Sábado:</span> <strong>7:00 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">No Más Solos</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Calle+37+%23520-63+Guarne" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cl 37 #520-63 B. San Antonio Guarne
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes:</span> <strong>7:00 P.M.</strong></div>
+                            <div class="schedule-item"><span>Domingo:</span> <strong>4:00 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Si Nos Recuperamos</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Barrio+El+Plan+El+Retiro" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> J.A.C. Barrio El Plan (El Retiro)
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Martes:</span> <strong>7:30 P.M.</strong></div>
+                        </div>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">La Gran Oportunidad</h3>
+                        <p class="group-address">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Carrera+25+%2316-13+La+Ceja" target="_blank" class="location-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Cómo llegar
+                            </a> Cra 25 #16-13 (2do. Piso) La Ceja Salon de Asocomunal
+                        </p>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes, Martes, Miércoles:</span> <strong>7:00 P.M.</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- GRUPOS VIRTUALES -->
+            <details class="zone-accordion">
+                <summary>GRUPOS VIRTUALES</summary>
+                <div class="groups-list">
+                    <div class="group-card">
+                        <h3 class="group-name">Oriente Antioqueño</h3>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Todos los días:</span> <strong>7:30 P.M.</strong></div>
+                        </div>
+                        <a href="https://us02web.zoom.us/j/82855197351" target="_blank" class="link-url">Zoom Link (Clave 123)</a>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Nos Recuperamos</h3>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Todos los días:</span> <strong>7:30A.M. y 9:00P.M.</strong></div>
+                        </div>
+                        <a href="https://zoom.us/j/7423614458" target="_blank" class="link-url">Zoom ID: 742 361 4458 (Clave 123)</a>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Tómalo con Calma</h3>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Todos los días:</span> <strong>9:00 P.M.</strong></div>
+                        </div>
+                        <a href="https://zoom.us/j/6458073362" target="_blank" class="link-url">Zoom ID: 645 8073 362</a>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">La Serenidad</h3>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes a Viernes:</span> <strong>7:00 P.M.</strong></div>
+                        </div>
+                        <a href="https://meet.google.com/wpq-loor-odi" target="_blank" class="link-url">meet.google.com/wpq-loor-odi</a>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">24 Horas Recuperación</h3>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Todo el día:</span> <strong>Chat de WhatsApp</strong></div>
+                        </div>
+                        <a href="https://chat.whatsapp.com/..." target="_blank" class="link-url">Unirse al grupo de WhatsApp</a>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Los Lazos que nos Unen</h3>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Lunes a Sábado:</span> <strong>10:00 A.M.</strong></div>
+                        </div>
+                        <a href="https://zoom.us/j/2896617641" target="_blank" class="link-url">Zoom ID: 289 661 7641</a>
+                    </div>
+                    <div class="group-card">
+                        <h3 class="group-name">Argentina</h3>
+                        <div class="group-schedule">
+                            <div class="schedule-item"><span>Todos los días:</span> <strong>8:00 P.M. a 10:00 P.M.</strong></div>
+                        </div>
+                        <a href="https://zoom.us/j/777692114" target="_blank" class="link-url">Zoom ID: 777 692 114</a>
+                    </div>
+                </div>
+            </details>
+
+        </section>
+
+        <!-- Botón Flotante de WhatsApp (dentro de la tarjeta principal) -->
+        <div class="whatsapp-fab-container" id="wa-fab-container">
+            <div class="wa-options-container">
+                <a href="https://wa.me/573203666551?text=Hola%2C%20necesito%20información%20sobre%20los%20grupos%20de%20Narcóticos%20Anónimos%20en%20Medellín.%20¿Me%20pueden%20ayudar%3F" class="whatsapp-button" target="_blank">
+                    <span>Contactar por WhatsApp - 320 366 65 51</span>
+                </a>
+                <a href="https://wa.me/573336412261?text=Hola%2C%20necesito%20información%20sobre%20los%20grupos%20de%20Narcóticos%20Anónimos%20en%20Medellín.%20¿Me%20pueden%20ayudar%3F" class="whatsapp-button" target="_blank">
+                    <span>Contactar por WhatsApp - 3336412261</span>
+                </a>
+            </div>
+            <button class="wa-main-button" onclick="toggleWhatsAppFAB()" title="Contactar por WhatsApp">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+            </button>
+        </div>
+
+    </main>
+
+    <footer class="page-footer">
+      <div style="font-size:1.4rem;margin-bottom:8px;"></div>
+      <strong>Narcóticos Anónimos — Área Medellín y Sur de Antioquia</strong>
+      <em>"No importa quién eres, ni de dónde vienes — la recuperación es posible."</em>
+      <div style="margin-top:14px;opacity:.7;font-size:.85rem;">
+        <a href="https://www.nacolombia.org" target="_blank">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zM2.04 4.326c.325 1.329 2.532 2.54 3.717 3.19.48.263.793.434.743.484-.08.08-.162.158-.242.234-.416.416-.753.939-1.027 1.462-.18.336-.37.693-.56 1.05-.119.224-.24.448-.36.673-.127.238-.25.478-.37.718-.21.423-.42.849-.63 1.282a6.983 6.983 0 0 1-1.482-3.83c0-.16.01-.32.03-.475.05-.38.12-.758.22-1.123.11-.37.23-.73.36-1.08.13-.34.27-.67.42-1a6.98 6.98 0 0 1 1.17-1.418zM13.96 11.674a6.983 6.983 0 0 1-1.482 3.83c-.21-.433-.42-.859-.63-1.282-.12-.24-.243-.475-.37-.718-.12-.225-.24-.449-.36-.673-.19-.357-.38-.714-.56-1.05-.274-.523-.61-1.046-1.027-1.462-.08-.076-.162-.154-.242-.234-.05.05-.263.22-.743.484-1.185.65-3.392 1.861-3.717 3.19a8.025 8.025 0 0 0 11.95-3.83z"/>
+            </svg>
+            Narcóticos Anónimos — Colombia
+        </a>
+      </div>
+    </footer>
+
+    <script>
+        function toggleWhatsAppFAB() {
+            document.getElementById('wa-fab-container').classList.toggle('active');
+        }
+
+        function filterGroups() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const accordions = document.querySelectorAll('.zone-accordion');
+
+            accordions.forEach(accordion => {
+                const groupCards = accordion.querySelectorAll('.group-card');
+                let hasVisibleGroup = false;
+
+                groupCards.forEach(card => {
+                    const text = card.textContent.toLowerCase();
+                    if (text.includes(filter)) {
+                        card.style.display = "";
+                        hasVisibleGroup = true;
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+
+                if (hasVisibleGroup) {
+                    accordion.style.display = "";
+                    // Si hay un filtro activo, abre el acordeón para mostrar los resultados
+                    if (filter) {
+                        accordion.open = true;
+                    }
+                } else {
+                    accordion.style.display = "none";
+                }
+            });
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            filterGroups(); // Vuelve a ejecutar el filtro para mostrar todo
+        }
+    </script>
+
+</body>
+</html>
