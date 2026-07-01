@@ -417,6 +417,42 @@
         .carousel-arrow.next {
             right: 5px;
         }
+
+        /* --- Estilos para el Panel de Admin --- */
+        .admin-event-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            border: 1px solid var(--color-borde);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background-color: #fff;
+        }
+        .admin-event-info {
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+        .admin-event-info code {
+            background-color: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+        .admin-event-actions button {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+        .admin-event-actions button:hover {
+            background-color: #fecaca;
+        }
     </style>
 </head>
 <body>
@@ -1126,6 +1162,37 @@
 
         </section>
 
+        <!-- Admin Panel (oculto por defecto) -->
+        <section id="admin-panel" style="display: none; margin-top: 40px; border-top: 2px solid var(--color-borde); padding-top: 24px;">
+            <h2 style="text-align: center; font-size: 1.3rem; margin-bottom: 24px;">Panel de Administración de Eventos</h2>
+            
+            <div id="admin-event-list" style="margin-bottom: 24px;">
+                <!-- La lista de eventos se generará aquí con JS -->
+            </div>
+        
+            <div class="group-card" style="background-color: #f9fafb;">
+                <h3 class="group-name">Añadir/Actualizar Evento</h3>
+                <form id="admin-event-form">
+                    <div style="margin-bottom: 12px;">
+                        <label for="event-image" style="display: block; font-weight: 600; margin-bottom: 4px;">Archivo de Imagen</label>
+                        <input type="file" id="event-image" name="eventImage" accept="image/*" required style="width: 100%; padding: 8px; border: 1px solid var(--color-borde); border-radius: 4px; box-sizing: border-box;">
+                        <p style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">La imagen seleccionada se subirá al servidor al guardar.</p>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 12px;">
+                        <div style="flex: 1; min-width: 200px;">
+                            <label for="event-start-date" style="display: block; font-weight: 600; margin-bottom: 4px;">Fecha de Inicio (Opcional)</label>
+                            <input type="date" id="event-start-date" style="width: 100%; padding: 8px; border: 1px solid var(--color-borde); border-radius: 4px; box-sizing: border-box;">
+                        </div>
+                        <div style="flex: 1; min-width: 200px;">
+                            <label for="event-end-date" style="display: block; font-weight: 600; margin-bottom: 4px;">Fecha de Fin (Opcional)</label>
+                            <input type="date" id="event-end-date" style="width: 100%; padding: 8px; border: 1px solid var(--color-borde); border-radius: 4px; box-sizing: border-box;">
+                        </div>
+                    </div>
+                    <button type="submit" style="background: var(--color-acento-inicio); color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: 600;">Guardar Evento</button>
+                </form>
+            </div>
+        </section>
+
         <!-- Botón Flotante de WhatsApp (dentro de la tarjeta principal) -->
         <div class="whatsapp-fab-container" id="wa-fab-container">
             <div class="wa-options-container">
@@ -1210,138 +1277,189 @@
             filterGroups(); // Vuelve a ejecutar el filtro para mostrar todo
         }
 
-        // --- Lógica para el Carrusel de Eventos ---
-        document.addEventListener('DOMContentLoaded', function() {
-            // --- PASO 1: Configuración ---
+        // --- Lógica para el Carrusel de Eventos y Panel de Admin ---
+        document.addEventListener('DOMContentLoaded', async function() {
+            // --- CONFIGURACIÓN GENERAL ---
             const modal = document.getElementById('eventsModal');
             const carouselImage = document.getElementById('carouselImage');
             const closeButton = modal.querySelector('.close-button');
-            // NUEVO: Referencias a las flechas de navegación
             const prevArrow = document.getElementById('prevImage');
             const nextArrow = document.getElementById('nextImage');
+            const adminPanel = document.getElementById('admin-panel');
+            let allEvents = [];
 
-            // --- PASO 2: ¡EDITA ESTA LISTA! ---
-            // Aquí puedes programar cuándo se muestra cada imagen.
-            const images = [
-                // --- INSTRUCCIONES ---
-                // src: La ruta a la imagen (obligatorio).
-                // endDate: (Opcional) La imagen se mostrará HASTA esta fecha (formato AAAA-MM-DD).
-                // startDate: (Opcional) La imagen se mostrará A PARTIR de esta fecha (formato AAAA-MM-DD).
-                
-                // --- EJEMPLOS DE USO ---
+            // --- FUNCIONES DE DATOS ---
+            async function getEventsFromServer() {
+                try {
+                    const response = await fetch('/api/events');
+                    if (!response.ok) throw new Error(`Error del servidor: ${response.statusText}`);
+                    return await response.json();
+                } catch (e) {
+                    console.error("Error al obtener eventos del servidor:", e);
+                    alert("No se pudieron cargar los eventos. Revisa la consola para más detalles.");
+                    return [];
+                }
+            }
 
-                // CASO A: RANGO DE FECHAS (INICIO Y FIN)
-                // Ideal para eventos con fechas definidas, como los aniversarios.
-                {
-                    src: 'Eventos/ElMilagro.jpeg',
-                    startDate: '2026-06-17',
-                    endDate: '2026-06-28'
-                }, 
-                //Se mostrará solo del 13 al 18 de Julio de 2024.
-                { 
-                    src: 'Eventos/GrupoLaunidad.jpeg',
-                    startDate: '2026-06-17',
-                    endDate: '2026-07-18'
-                },
-                { 
-                    src: 'Eventos/AniversarioTransformacion.jpeg',
-                    startDate: '2026-06-23',
-                    endDate: '2026-07-19'
-                },
-                
-                 {
-                    src: 'Eventos/LaUnidadExperimental.jpeg',
-                    startDate: '2026-06-17',
-                    endDate: '2026-08-28'
-                },
+            // --- LÓGICA DEL PANEL DE ADMIN ---
+            async function initAdminPanel() {
+                const eventListContainer = document.getElementById('admin-event-list');
+                const form = document.getElementById('admin-event-form');
+                const submitButton = form.querySelector('button[type="submit"]');
 
-                // CASO B: SOLO FECHA DE FIN (como pediste)
-                // Se mostrará desde ahora hasta la fecha indicada. Útil para anuncios que expiran.
-                // { src: 'Eventos/anuncio.png', endDate: '2024-12-31' },
+                async function refreshAdminList() {
+                    allEvents = await getEventsFromServer();
+                    renderAdminList(allEvents);
+                }
 
-                // CASO C: IMAGEN GENÉRICA
-                // Se mostrará solo si no hay otros eventos programados para hoy.
-                // { src: 'Eventos/logo-generico.png' }
-            ];
+                function renderAdminList(images) {
+                    eventListContainer.innerHTML = ''; // Limpiar lista
+                    if (images.length === 0) {
+                        eventListContainer.innerHTML = '<p>No hay eventos programados.</p>';
+                        return;
+                    }
 
-            let activeImages = []; // NUEVO: Aquí se guardan las imágenes válidas para hoy.
+                    images.forEach((image, index) => {
+                        const item = document.createElement('div');
+                        item.className = 'admin-event-item';
+                        item.innerHTML = `
+                            <div class="admin-event-info">
+                                <strong>Imagen:</strong> <code>${image.src}</code><br>
+                                <small><strong>Desde:</strong> ${image.startDate || 'Siempre'} | <strong>Hasta:</strong> ${image.endDate || 'Siempre'}</small>
+                            </div>
+                            <div class="admin-event-actions">
+                                <button data-src="${image.src}" class="delete-event-btn" title="Eliminar evento">Eliminar</button>
+                            </div>
+                        `;
+                        eventListContainer.appendChild(item);
+                    });
+
+                    document.querySelectorAll('.delete-event-btn').forEach(button => {
+                        button.addEventListener('click', async function() {
+                            if (!confirm('¿Estás seguro de que quieres eliminar este evento?')) return;
+                            
+                            const srcToDelete = this.getAttribute('data-src');
+                            try {
+                                const response = await fetch('/api/events', {
+                                    method: 'DELETE',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ src: srcToDelete })
+                                });
+                                if (!response.ok) throw new Error(await response.text());
+                                alert('Evento eliminado correctamente.');
+                                await refreshAdminList();
+                            } catch (error) {
+                                console.error('Error al eliminar evento:', error);
+                                alert(`Error al eliminar el evento: ${error.message}`);
+                            }
+                        });
+                    });
+                }
+
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const imageFile = document.getElementById('event-image').files[0];
+                    const startDate = document.getElementById('event-start-date').value || null;
+                    const endDate = document.getElementById('event-end-date').value || null;
+
+                    if (!imageFile) {
+                        alert('Debes seleccionar un archivo de imagen.');
+                        return;
+                    }
+
+                    const formData = new FormData();
+                    formData.append('eventImage', imageFile);
+                    formData.append('startDate', startDate || '');
+                    formData.append('endDate', endDate || '');
+
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Guardando...';
+
+                    try {
+                        const response = await fetch('/api/events', { method: 'POST', body: formData });
+                        if (!response.ok) throw new Error(await response.text());
+                        alert('Evento guardado correctamente.');
+                        form.reset();
+                        await refreshAdminList();
+                    } catch (error) {
+                        console.error('Error al guardar evento:', error);
+                        alert(`Error al guardar el evento: ${error.message}`);
+                    } finally {
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Guardar Evento';
+                    }
+                });
+
+                adminPanel.style.display = 'block';
+                await refreshAdminList();
+            }
+
+            // --- LÓGICA DEL CARRUSEL (MODIFICADA) ---
+            let activeImages = [];
             let currentImageIndex = 0;
             let carouselInterval;
 
-            // --- Ayuda para depuración: se activa si una imagen no carga ---
             carouselImage.onerror = function() {
                 console.error(`ERROR: No se pudo cargar la imagen en la ruta: "${carouselImage.src}".`);
                 console.warn("VERIFICA: 1. Que la carpeta 'Eventos' esté junto al archivo HTML. 2. Que el nombre del archivo (incluyendo .jpg, .png, etc.) esté escrito EXACTAMENTE igual en la lista 'images'.");
-                // Para que no se quede un pop-up vacío, lo cerramos si hay un error.
                 stopCarousel();
                 alert("Error al cargar una imagen de evento. Revisa la consola del navegador (F12) para más detalles.");
             };
 
-            // Función para mostrar la imagen actual
             function displayImage() {
-                // MODIFICADO: Usa el array de imágenes activas y la propiedad 'src'
                 carouselImage.src = activeImages[currentImageIndex].src;
             }
 
-            // Función para avanzar a la siguiente imagen
             function showNextImage() {
-                // MODIFICADO: Usa el array de imágenes activas
                 currentImageIndex = (currentImageIndex + 1) % activeImages.length;
                 displayImage();
             }
 
-            // NUEVO: Función para retroceder a la imagen anterior
             function showPreviousImage() {
-                // MODIFICADO: Usa el array de imágenes activas
                 currentImageIndex = (currentImageIndex - 1 + activeImages.length) % activeImages.length;
                 displayImage();
             }
 
-            // NUEVO: Función para reiniciar el intervalo automático
             function resetCarouselInterval() {
                 clearInterval(carouselInterval);
-                // MODIFICADO: Usa el array de imágenes activas
                 if (activeImages.length > 1) {
-                    carouselInterval = setInterval(showNextImage, 5000); // Cambia cada 9 segundos
+                    carouselInterval = setInterval(showNextImage, 5000); // Cambia cada 5 segundos
                 }
             }
 
-            function startCarousel() {
-                // NUEVO: Lógica para filtrar imágenes por fecha.
+            async function startCarousel() {
+                allEvents = await getEventsFromServer();
                 const today = new Date();
                 today.setHours(0, 0, 0, 0); // Normaliza a la medianoche para comparar solo fechas.
 
-                // 1. Busca imágenes programadas para hoy.
-                const scheduledImages = images.filter(image => {
+                const scheduledImages = allEvents.filter(image => {
                     const startDate = image.startDate ? new Date(image.startDate + 'T00:00:00') : null;
                     const endDate = image.endDate ? new Date(image.endDate + 'T00:00:00') : null;
 
                     if (!startDate && !endDate) return false; // Ignora las no programadas en este paso.
 
                     if (startDate && endDate) return today >= startDate && today <= endDate;
-                    if (startDate) return today >= startDate;
-                    if (endDate) return today <= endDate;
+                    if (startDate && !endDate) return today >= startDate;
+                    if (!startDate && endDate) return today <= endDate;
                     return false;
                 });
 
-                // 2. Decide qué mostrar: las programadas o las genéricas (sin fecha).
                 if (scheduledImages.length > 0) {
                     activeImages = scheduledImages;
                 } else {
-                    activeImages = images.filter(image => !image.startDate && !image.endDate);
+                    activeImages = allEvents.filter(image => !image.startDate && !image.endDate);
                 }
 
-                // MODIFICADO: Solo muestra el pop-up si hay imágenes activas para hoy.
                 if (activeImages.length > 0) {
                     modal.style.display = "flex";
                     setTimeout(() => { modal.style.opacity = 1; }, 10); // Animación de entrada
 
-                    displayImage(); // Muestra la primera imagen activa
+                    displayImage();
 
                     if (activeImages.length > 1) {
                         prevArrow.style.display = 'block';
                         nextArrow.style.display = 'block';
-                        resetCarouselInterval(); // Inicia el temporizador
+                        resetCarouselInterval();
                     }
                 } else {
                     console.log("No hay eventos programados para mostrar hoy en el carrusel.");
@@ -1356,29 +1474,23 @@
                 }, 300); // Espera a que termine la animación de opacidad
             }
 
-            // Inicia el carrusel cuando la página está lista
-            startCarousel();
+            // --- INICIALIZACIÓN ---
+            await startCarousel();
 
-            // --- Formas de cerrar el pop-up ---
-
-            // 1. Clic en el botón 'X'
             closeButton.onclick = stopCarousel;
 
-            // 2. Clic fuera de la imagen
             window.onclick = function(event) {
                 if (event.target == modal) {
                     stopCarousel();
                 }
             };
 
-            // 3. Presionar la tecla 'Escape'
             document.addEventListener('keydown', function(event) {
                 if (event.key === "Escape") {
                     stopCarousel();
                 }
             });
 
-            // NUEVO: Eventos para las flechas de navegación manual
             nextArrow.onclick = function() {
                 showNextImage();
                 resetCarouselInterval(); // Reinicia el temporizador después del clic
@@ -1388,6 +1500,12 @@
                 showPreviousImage();
                 resetCarouselInterval(); // Reinicia el temporizador después del clic
             };
+
+            // Comprobar si es admin y, si es así, iniciar el panel
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin') === 'true') {
+                await initAdminPanel();
+            }
         });
     </script>
 
