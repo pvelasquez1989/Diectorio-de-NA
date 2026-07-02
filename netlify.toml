@@ -1,0 +1,14 @@
+# Este archivo le dice a Netlify cómo manejar tu proyecto.
+
+[build]
+  # Asumimos que tu sitio está en la raíz. Si estuviera en una carpeta como "public", la cambiarías aquí.
+  publish = "." 
+
+[functions]
+  directory = "netlify/functions"
+
+# Esta regla redirige las peticiones del navegador desde /api/events a tu función de Netlify.
+[[redirects]]
+  from = "/api/events"
+  to = "/.netlify/functions/events"
+  status = 200
